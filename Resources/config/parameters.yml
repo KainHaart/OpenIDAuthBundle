@@ -1,0 +1,17 @@
+parameters:
+    openid: ~
+        
+#        
+# An example of ur config.yml:
+#openid.config: 
+#    openid:
+#        profile: google	# default profile to use
+#        google_profile:
+#            required:
+#                email: "contact/email" 			# required mail 
+#                first: "namePerson/first" 			# and first name from OpenID provider
+#													# ...other required parameters
+#            return: "openid"						# name of return_to route
+#													# if not set - returned to the same url that sent the request
+#            default: "google.com/accounts/o8/id"   # default identity is google one
+#     

@@ -1,0 +1,16 @@
+services:
+  openidauth.security.authentication.provider:
+    class:  KainHaart\OpenIDAuthBundle\Security\Authentication\Provider\OpenIDAuthProvider
+    arguments: [@openid]
+
+  openidauth.security.authentication.listener:
+    class:  KainHaart\OpenIDAuthBundle\Security\Firewall\OpenIDAuthListener
+    parent: security.authentication.listener.abstract
+    abstract: true
+  
+  openidauth.security.entry_point:
+    class: KainHaart\OpenIDAuthBundle\Security\EntryPoint\OpenIDAuthEntryPoint
+    
+  openid:
+    class: KainHaart\OpenIDAuthBundle\OpenID\ConsumerService
+    arguments: [%openid%, @service_container]  
