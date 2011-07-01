@@ -22,13 +22,19 @@ use Symfony\Component\HttpKernel\Event\GetResponseEvent;
 
 class OpenIDAuthEntryPoint implements AuthenticationEntryPointInterface
 {
+	protected $loginPath;
+	
+	public function __construct($loginPath)
+	{
+		$this->loginPath = $loginPath;;
+	}
 
     /**
      * {@inheritdoc}
      */
     public function start(Request $request, AuthenticationException $authException = null)
     {
-	$response = new RedirectResponse("/public");
+	$response = new RedirectResponse($this->loginPath);
 	return $response;
 	}
 	

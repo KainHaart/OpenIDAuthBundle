@@ -10,6 +10,7 @@ services:
   
   openidauth.security.entry_point:
     class: KainHaart\OpenIDAuthBundle\Security\EntryPoint\OpenIDAuthEntryPoint
+    arguments: []
     
   openid:
     class: KainHaart\OpenIDAuthBundle\OpenID\ConsumerService

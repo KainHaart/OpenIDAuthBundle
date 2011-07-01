@@ -39,6 +39,7 @@ class OpenIDAuthFactory extends AbstractFactory
         $entryPointId = 'security.entry_point.openidauth'.$id;
         $container
             ->setDefinition($entryPointId, new DefinitionDecorator('openidauth.security.entry_point'))
+			->addArgument($config['login_path'])
 	        ;
 
         return $entryPointId;
