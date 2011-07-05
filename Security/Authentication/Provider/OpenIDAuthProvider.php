@@ -23,39 +23,50 @@ class OpenIDAuthProvider implements AuthenticationProviderInterface
 		{
 		$this->oid = $serviceOpenID;
 		}
-	
-    public function authenticate(TokenInterface $token)
-    {
-		# Provider tries to authenticate token
-		$oid = $this->oid;	
-		if (count($_GET) == 0)
+		
+	public function authenticate(TokenInterface $token)
+		{	
+		if($token->hasProviderResponse())
 			{
-			# Requesting authentication from openid provider (start)
-			$identify = $token->getUser();
-			$sAuthURL = $oid->start($identify);
-			if (!$sAuthURL)
-				{
-				# Cannot start OpenID
-				throw new \Exception("Cannot start OpenID");
-				}
-			$token->sAuthenticateURL = $sAuthURL;
-			# we've figured out that user should be redirected to {$sAuthURL}
-			return $token;
-			} 
-		else 
-			{	
-			# Process OpenID provider response (finish)
-			$attributes = $oid->finish();
-			if (!$attributes) 
-				{
-				throw new AuthenticationException('Test authentication failed.');	
-				# User canceled request or another error happened (validation failed, etc...)
-				}
-			$openid = $attributes['id'];
-			$token = new OpenIDToken($openid,array("ROLE_USER"));
-			$token->setAuthenticated(true);
-			return $token;
+			return $this->finish($token);
 			}
+		else
+			{
+			return $this->start($token);
+			}
+		}
+		
+	public function start(TokenInterface $token)
+		{
+		# Provider tries to authenticate token
+		$oid = $this->oid;
+		# Requesting authentication from openid provider (start)
+		$identify = $token->getUser();
+		$sAuthURL = $oid->start($identify);
+		if (!$sAuthURL)
+			{
+			# Cannot start OpenID
+			throw new \Exception("Cannot start OpenID");
+			}
+		$token->sAuthenticateURL = $sAuthURL;
+		# we've figured out that user should be redirected to {$sAuthURL}
+		return $token;
+		}
+	
+    public function finish(TokenInterface $token)
+    {
+		$oid = $this->oid;	
+		# Process OpenID provider response (finish)
+		$attributes = $oid->finish();
+		if (!$attributes) 
+			{
+			throw new AuthenticationException('Test authentication failed.');	
+			# User canceled request or another error happened (validation failed, etc...)
+			}
+		$openid = $attributes['id'];
+		$token = new OpenIDToken($openid,array("ROLE_USER"));
+		$token->setAuthenticated(true);
+		return $token;
     }
 
     public function supports(TokenInterface $token)

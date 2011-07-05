@@ -20,6 +20,24 @@ class OpenIDToken extends AbstractToken
     }
 	
 	public $sAuthenticateURL = "";
+	
+	protected $aProviderResponce = array();
+	
+	public function setProviderResponse($data)
+		{
+		$this->aProviderResponce = $data;
+		return $this;
+		}
+		
+	public function getProviderResponse()
+		{
+		return $this->aProviderResponce;
+		}
+		
+	public function hasProviderResponse()
+		{
+		return (boolean)($this->aProviderResponce);
+		}
 
     public function getCredentials()
     {
